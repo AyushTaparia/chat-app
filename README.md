@@ -1,36 +1,113 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# WhatsChat
+
+A real-time chat application built with Next.js, Socket.io, and Strapi.
+
+## Overview
+
+WhatsChat is a modern web-based chat application that allows users to register, login, and exchange messages in real-time. The application features a clean, responsive UI inspired by popular messaging apps.
+
+## Features
+
+- User authentication (sign up and login)
+- Real-time messaging
+- Message persistence
+- Responsive design
+- Date grouping for messages
+- Animated UI elements
+
+## Tech Stack
+
+- **Frontend**:
+  - Next.js (React framework)
+  - Socket.io-client (for real-time communication)
+  - Zustand (state management)
+  - Framer Motion (animations)
+  - Tailwind CSS (styling)
+  - Lucide React (icons)
+  - Date-fns (date formatting)
+
+- **Backend**:
+  - Strapi (headless CMS for authentication)
+  - Socket.io (for real-time server)
+
+## Project Structure
+
+The main components of the application are:
+
+- `AuthForm.tsx`: Handles user registration and login
+- `ChatContainer.tsx`: Main container for the chat interface
+- `ChatInput.tsx`: Input field for sending messages
+- `ChatMessage.tsx`: Individual message component
+- `Header.tsx`: App header with user info and logout functionality
+- `socket.ts`: Socket.io configuration
+- `useStore.ts`: Zustand store for state management
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Node.js (v14 or later)
+- npm or yarn
+- Strapi instance running (for authentication)
+
+### Environment Variables
+
+Create a `.env.local` file in the root directory with the following variables:
+
+```
+NEXT_PUBLIC_STRAPI_URL=http://localhost:1337
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+3. Run the development server:
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Authentication Flow
 
-## Learn More
+1. User registers or logs in through the AuthForm
+2. Credentials are sent to Strapi's authentication endpoints
+3. On successful authentication, user data is stored in the Zustand store
+4. Socket connection is established
+5. User can start sending and receiving messages
 
-To learn more about Next.js, take a look at the following resources:
+## Messaging Flow
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. User types a message in ChatInput
+2. Message is sent to the server via Socket.io
+3. Server broadcasts the message to all connected clients
+4. Clients receive the message and update their state
+5. Message is displayed in the chat interface
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## State Management
 
-## Deploy on Vercel
+The application uses Zustand for state management with persistence to localStorage. The store manages:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- User data
+- Messages
+- Hydration state (to prevent UI flickering on reload)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Styling
+
+The application uses Tailwind CSS with a custom color scheme inspired by popular messaging apps. The UI is responsive and works well on mobile devices.
+
+## Future Improvements
+
+- Add message delivery status (sent, delivered, read)
+- Implement typing indicators
+- Add support for media messages (images, videos)
+- Add group chat functionality
+- Implement message search
+- Add message reactions
