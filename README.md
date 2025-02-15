@@ -2,6 +2,10 @@
 
 A real-time chat application built with Next.js, Socket.io, and Strapi.
 
+## Live Demo
+
+Check out the live demo: [WhatsChat Live Demo](https://chat-app-fwfv.vercel.app/)
+
 ## Overview
 
 WhatsChat is a modern web-based chat application that allows users to register, login, and exchange messages in real-time. The application features a clean, responsive UI inspired by popular messaging apps.
