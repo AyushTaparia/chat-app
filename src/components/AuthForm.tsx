@@ -4,15 +4,18 @@ import { useState } from "react";
 import axios from "axios";
 import { useStore } from "@/store/useStore";
 import { socket } from "@/lib/socket";
+import { Loader2 } from "lucide-react";
 
 export function AuthForm() {
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const setUser = useStore((state) => state.setUser);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
+    setIsLoading(true);
     const formData = new FormData(e.currentTarget);
 
     try {
@@ -44,6 +47,7 @@ export function AuthForm() {
       //eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(err.response?.data?.error?.message || "An error occurred");
+      setIsLoading(false);
     }
   };
 
@@ -68,6 +72,7 @@ export function AuthForm() {
               placeholder="Username"
               className="w-full p-3 bg-[#2a3942] text-[#e9edef] rounded border-none focus:ring-2 focus:ring-[#00a884] outline-none placeholder:text-[#8696a0]"
               required
+              disabled={isLoading}
             />
           )}
 
@@ -77,6 +82,7 @@ export function AuthForm() {
             placeholder="Email"
             className="w-full p-3 bg-[#2a3942] text-[#e9edef] rounded border-none focus:ring-2 focus:ring-[#00a884] outline-none placeholder:text-[#8696a0]"
             required
+            disabled={isLoading}
           />
 
           <input
@@ -86,13 +92,24 @@ export function AuthForm() {
             className="w-full p-3 bg-[#2a3942] text-[#e9edef] rounded border-none focus:ring-2 focus:ring-[#00a884] outline-none placeholder:text-[#8696a0]"
             required
             minLength={6}
+            disabled={isLoading}
           />
 
           <button
             type="submit"
-            className="w-full p-3 bg-[#00a884] text-white rounded hover:bg-[#00916e] transition-colors font-medium"
+            className="w-full p-3 bg-[#00a884] text-white rounded hover:bg-[#00916e] transition-colors font-medium flex items-center justify-center"
+            disabled={isLoading}
           >
-            {isLogin ? "Login" : "Sign Up"}
+            {isLoading ? (
+              <>
+                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                {isLogin ? "Logging in..." : "Signing up..."}
+              </>
+            ) : isLogin ? (
+              "Login"
+            ) : (
+              "Sign Up"
+            )}
           </button>
         </form>
 
@@ -100,6 +117,7 @@ export function AuthForm() {
           <button
             onClick={() => setIsLogin(!isLogin)}
             className="text-[#00a884] hover:text-[#00916e]"
+            disabled={isLoading}
           >
             {isLogin
               ? "Don't have an account? Sign up"

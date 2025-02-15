@@ -12,7 +12,7 @@ import { format, isToday, isYesterday } from "date-fns";
 import { motion } from "framer-motion";
 
 export default function ChatContainer() {
-  const { user, messages, addMessage } = useStore();
+  const { user, messages, addMessage, isHydrated } = useStore();
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -39,6 +39,16 @@ export default function ChatContainer() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  // Show loading spinner while hydrating
+  if (!isHydrated) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-[#111b21]">
+        <div className="w-12 h-12 border-4 border-[#00a884] border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  // Only show AuthForm if user is not logged in and hydration is complete
   if (!user) {
     return <AuthForm />;
   }
